@@ -1,209 +1,249 @@
+<<<<<<< HEAD
 📘 Dify Workflows — Streaming Research, Scraping & Content Automation
 
 This repository contains a suite of Dify.ai workflows that work together to automate research, scraping, content planning, and draft creation for DealNews-style streaming discount content.
 
 It includes:
 
-Get Webpage Content — A Firecrawl-based scraper with optional LLM cleaning
+# 📘 Dify Workflows & Hosting Configuration  
+Streaming Research Automation • Scraping • Content Planning • Docker Deployment
 
-Collect Summarized Web Research — A structured fact-gathering research engine
+This repository contains both:
 
-Streaming Service Promo Code Automation — A full article planning & drafting workflow
+1. **Dify.ai workflow documentation** for streaming research, scraping, and content automation  
+2. **Dify Docker hosting configuration**, including nginx, certbot, SSRF proxy, Couchbase server, and environment setup
 
-These workflows are modular and designed to be used both independently and together as a connected system.
+It is intended as a combined home for:
+- Your research workflows  
+- Your content automation workflows  
+- The hosting stack that powers your private Dify instance
 
-🚀 Overview of the Workflow System
+---
+
+# 🚀 Workflow System Overview (Dify Workflows)
+
+This repo includes three major Dify workflows:
+
+### **1. Get Webpage Content**
+Firecrawl-based scraper with optional LLM cleaning.
+
+### **2. Collect Summarized Web Research**
+A structured fact-gathering research engine.
+
+### **3. Streaming Service Promo Code Automation**
+A full article planning & drafting workflow.
+
+### **High-Level Flow**
+
 User Query
-   ↓
+↓
 Collect Summarized Web Research
-   ↓  (fact-level research)
-   ↓
+↓ (fact-level research)
 Streaming Service Promo Code Automation
-   ↓  (scrapes URLs, structures outline, expands sections)
-   ↓
+↓ (scrapes URLs, outlines content, expands sections)
 Get Webpage Content
-   ↓  (cleaned webpage content)
-   ↓
+↓ (cleaner webpage content)
 Final Draft Article (SEO-ready)
 
+yaml
+Copy code
 
-The system:
+### **Capabilities**
+- Multi-query web research  
+- Fact-level summarization  
+- URL scraping + text cleaning  
+- SEO-focused structured article generation  
+- Automatic internal linking from knowledge base  
+- Output in DealNews editorial style  
 
-Performs multi-query web research
+---
 
-Summarizes research into extracted facts
-
-Scrapes top URLs and cleans page content
-
-Generates structured, SEO-focused long-form articles
-
-Injects internal links using a knowledge base
-
-Outputs DealNews-style subscriber-facing content
-
-📂 Repository Structure
-
-A recommended layout for your repo:
+# 📂 Recommended Repository Structure
 
 /
 ├── workflows/
-│   ├── Content Planner - Streaming Service Promo Code Automation.yml
-│   ├── Get Webpage Content.yml
-│   ├── Collect Summarized Web Research.yml
+│ ├── Content Planner - Streaming Service Promo Code Automation.yml
+│ ├── Get Webpage Content.yml
+│ ├── Collect Summarized Web Research.yml
 │
 ├── docs/
-│   ├── README-get-webpage-content.md
-│   ├── workflow-diagram-get-webpage-content.txt
-│   ├── architecture-diagram-get-webpage-content.md
-│   ├── README-collect-summarized-web-research.md
-│   ├── workflow-diagram-collect-summarized-web-research.txt
-│   ├── architecture-diagram-collect-summarized-web-research.md
-│   ├── README-streaming-service-planner.md        (optional — can generate)
-│   ├── diagrams/                                  (optional)
+│ ├── README-get-webpage-content.md
+│ ├── README-collect-summarized-web-research.md
+│ ├── workflow-diagram-get-webpage-content.txt
+│ ├── workflow-diagram-collect-summarized-web-research.txt
+│ ├── architecture-diagram-get-webpage-content.md
+│ ├── architecture-diagram-collect-summarized-web-research.md
 │
-└── README.md   ← (this file)
+└── README.md (this file)
 
+yaml
+Copy code
 
-You may organize differently, but this structure supports clarity and scalability.
+---
 
-🧩 Workflow Summaries
-1. 🔍 Collect Summarized Web Research
+# 🧩 Workflow Summaries
 
-Purpose:
-Generates structured research summaries using web search + LLM fact extraction.
+## 🔍 1. Collect Summarized Web Research
+- Multi-query search (`|||` splitting)
+- Web search → structured JSON links
+- LLM → fact extraction
+- Used for article planning and workflow pre-research
 
-Key features:
+Docs: `docs/README-collect-summarized-web-research.md`
 
-Split queries with ||| for multi-topic research
+---
 
-Web search API (search_get)
+## 🕸️ 2. Get Webpage Content
+- Firecrawl scraping (HTML + markdown)
+- Optional LLM cleaning pass (`cleanOutput`)
+- Removes boilerplate, disclaimers, nav, etc.
 
-JSON → structured links (title, URL, date, snippet)
+Docs: `docs/README-get-webpage-content.md`
 
-LLM conversion into fact-level bullet summaries
+---
 
-Output ready for content planning
+## ✍️ 3. Streaming Service Promo Code Automation
+Generates fully written DealNews-style articles including:
 
-Typical Use:
-Pre-populating knowledge for outlines and article generation.
+- Vendor pricing breakdowns  
+- Discount trends  
+- Summaries of competitor pages  
+- Internal link injection  
+- Research synthesis  
+- Structured SEO-optimized writing  
 
-Docs:
-Located in docs/README-collect-summarized-web-research.md
+---
 
-2. 🕸️ Get Webpage Content
+# 🔧 Using These Workflows Together
 
-Purpose:
-Scrape full webpage content using Firecrawl, clean/normalize results, and optionally run LLM-based content cleanup.
+1. Import all .yml into Dify  
+2. Mark each workflow as “Available as Tool”  
+3. Configure search provider (`search_get`)  
+4. Connect knowledge base datasets  
+5. Run the main “Streaming Promo Code Automation” workflow
 
-Key features:
+---
 
-Firecrawl scrape tool (markdown + HTML)
+# 🐳 Docker Deployment (Hosting Configuration)
 
-Optional custom text merging
+This repo also includes the **updated Dify docker deployment stack**, replacing legacy files.
 
-Optional “cleanOutput” LLM pass (remove nav/header/footer/disclaimers/etc.)
+---
 
-Outputs structured content for deeper analysis
+## 📦 What’s New
 
-Typical Use:
-Scraping competitor pages, vendor pages, pricing pages, or news articles.
+### ✔ Certbot container
+- Auto-renewing SSL certificates  
+- Integrated with nginx reverse proxy  
+- See: `docker/certbot/README.md`
 
-Docs:
-Located in docs/README-get-webpage-content.md
+### ✔ Unified `.env` configuration
+- Centralized environment control  
+- Required for running docker-compose  
+- Use `.env.example` as reference
 
-3. ✍️ Streaming Service Promo Code Automation
+### ✔ Vector database selection
+Set via:  
+VECTOR_STORE=weaviate | milvus | opensearch
 
-Purpose:
-Full article-generation pipeline for pages like:
+shell
+Copy code
 
-How Much Does <Vendor> Cost? Saving the Most in 2025
+### ✔ Legacy support moved
+Legacy docker files are in:
+docker-legacy/
 
+yaml
+Copy code
 
-Key features:
+---
 
-Calls the Collect Summarized Web Research workflow 4× for strong coverage
+# 🐳 How to Deploy with Docker Compose
 
-Extracts URLs → scrapes each → summarizes content
+## 1. Prerequisites
+- Docker  
+- Docker Compose v2+
 
-Builds a detailed outline with structured headings
+## 2. Prepare Environment
 
-Expands each outline section with context-aware LLMs
+```bash
+cd docker
+cp .env.example .env
+Edit .env and update:
 
-Pulls internal links from your Dify knowledge base
+CONSOLE_API_URL
 
-Appends standardized DealNews trust section
+SERVICE_API_URL
 
-Outputs a complete article ready for editing or publishing
+APP_WEB_URL
 
-Typical Use:
-Creating SEO content around promo codes, pricing trends, and discount patterns.
+Database settings
 
-🔧 Using These Workflows Together
-1. Add all three workflows to Dify.ai
+Redis settings
 
-Upload the .yml files into Dify:
+Storage (S3, Azure Blob, etc.)
 
-Settings → Workflows → Import Workflow
+Vector DB params
 
-2. Set each workflow to “Available as Tool”
+3. Run Dify
+bash
+Copy code
+docker compose up -d
+4. SSL Setup
+See:
 
-In Dify:
+bash
+Copy code
+docker/certbot/README.md
+🔧 Middleware Deployment (Optional)
+Use:
 
-Open a workflow → Settings → “Enable Tool Workflow”
+Copy code
+docker-compose.middleware.yaml
+Create:
 
-This allows one workflow to call another.
+bash
+Copy code
+cp middleware.env.example middleware.env
+Run:
 
-3. Configure your Search API provider
+bash
+Copy code
+docker compose -f docker-compose.middleware.yaml up -d
+🔁 Migration from Legacy Docker
+If upgrading:
 
-The research workflow expects a provider named “Search Web” with a tool called search_get.
+Review .env.example
 
-Make sure your API key is configured.
+Transfer custom nginx/squid configs
 
-4. Connect your Knowledge Base
+Backup old data before migration
 
-The Streaming Content workflow references a dataset:
+📝 Notes on .env
+Some important sections include:
 
-dataset_id: 4b16bf72-6a4b-445c-b924-a0bcf7ad8f7a
+Common Variables
+CONSOLE_API_URL
 
+SERVICE_API_URL
 
-Ensure that:
+APP_WEB_URL
 
-The dataset exists
+FILES_URL
 
-It contains internal links and DealNews content
+Database
+DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT
 
-The “Knowledge Retrieval” step is pointed at this dataset
+Redis
+REDIS_HOST, REDIS_PASSWORD
 
-5. Trigger the main workflow
+Storage
+STORAGE_TYPE, S3_BUCKET_NAME
 
-Use the Streaming Service Promo Code Automation workflow and pass:
+Vector Databases
+VECTOR_STORE
 
-vendor_name
+WEAVIATE_ENDPOINT
 
-optional research
+MILVUS_URI
 
-optional custom_scrape
-
-knowledge
-
-You will receive a complete markdown-style article.
-
-💡 Example Usage
-
-Running the main workflow with:
-
-vendor_name = "Hulu"
-knowledge = "Hulu deals"
-
-
-Will generate:
-
-Four rounds of web research
-
-Scrape top URLs
-
-Analyze pricing, deals, discount history
-
-Insert internal DealNews links
-
-Produce a polished, structured article
