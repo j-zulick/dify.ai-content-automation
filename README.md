@@ -1,6 +1,7 @@
-📘 Dify Workflows & Hosting Configuration
+# 📘 Dify Workflows & Hosting Configuration
 
-Streaming Research Automation • Scraping • Content Planning • Docker Deployment
+**Streaming Research Automation • Scraping • Content Planning • Docker Deployment**
+
 
 This repository contains both:
 
