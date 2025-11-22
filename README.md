@@ -2,176 +2,141 @@
 
 **Streaming Research Automation • Scraping • Content Planning • Docker Deployment**
 
+---
 
-This repository contains both:
+## 🔥 Overview
 
-Dify.ai workflow documentation for streaming research, scraping, and content automation
+This repository contains:
 
-Dify Docker hosting configuration, including nginx, certbot, SSRF proxy, Couchbase server, and environment setup
+- **Dify.ai workflow documentation** for research, scraping, and content generation  
+- **Docker hosting configuration**, including:
+  - nginx reverse proxy
+  - certbot (SSL)
+  - SSRF proxy
+  - Couchbase server
+  - Postgres + Redis
+  - `.env`-based configuration
 
-It serves as a combined home for:
+---
 
-Research workflows
+## 🚀 Workflow System (Dify Workflows)
 
-Content automation workflows
+This repo includes three major workflows:
 
-The hosting stack that powers your private Dify instance
+### 1️⃣ Get Webpage Content
+A Firecrawl-powered scraper with:
+- Markdown + HTML extraction  
+- Optional LLM cleaning (`cleanOutput`)  
+- Boilerplate removal  
+- Structured output
 
-🚀 Workflow System Overview (Dify Workflows)
+---
 
-This repo includes three major Dify workflows:
-
-1. Get Webpage Content
-
-A Firecrawl-powered webpage scraper with:
-
-Markdown + HTML extraction
-
-Optional LLM "cleanOutput" content cleaning
-
-Removal of navigation, headers, disclaimers, and boilerplate
-
-Structured output ready for downstream summarization
-
-2. Collect Summarized Web Research
-
+### 2️⃣ Collect Summarized Web Research
 A structured research engine that:
+- Uses multi-query search (`|||`)  
+- Normalizes search results into JSON  
+- Extracts fact-level insights via LLM  
 
-Uses multi-query search (||| splitting)
+---
 
-Converts search results into normalized JSON
+### 3️⃣ Streaming Service Promo Code Automation
+Generates DealNews-style full articles:
+- Research → Outline → URL scraping → Expansion  
+- Internal linking with knowledge base  
+- SEO-optimized structure  
 
-Extracts fact-level findings with an LLM
+---
 
-Outputs clean research summaries used by planning workflows
+## 🔄 High-Level Workflow
 
-3. Streaming Service Promo Code Automation
+User Query
+↓
+Collect Summarized Web Research
+↓ (fact extraction)
+Streaming Promo Code Automation
+↓ (outline → expansion → scrape URLs)
+Get Webpage Content
+↓ (cleaned text)
+Final SEO-Optimized Article
 
-A DealNews-style long-form content generator that:
+---
 
-Runs four rounds of structured web research
-
-Scrapes URLs and cleans competitor content
-
-Builds a detailed SEO outline
-
-Expands each section via LLM
-
-Adds internal links from your Dify knowledge base
-
-Produces a polished markdown article
-
-🔄 High-Level Workflow Flow
-User Query  
-   ↓  
-Collect Summarized Web Research  
-   ↓ (fact extraction)  
-Streaming Promo Code Automation  
-   ↓ (outline → expansion → scrape URLs)  
-Get Webpage Content  
-   ↓ (cleaned text)  
-Final SEO-Optimized Article  
-
-📂 Recommended Repository Structure
+## 📂 Recommended Repository Structure
 /
 ├── workflows/
-│   ├── Content Planner - Streaming Service Promo Code Automation.yml
-│   ├── Get Webpage Content.yml
-│   ├── Collect Summarized Web Research.yml
+│ ├── Promo Code Automation.yml
+│ ├── Get Webpage Content.yml
+│ ├── Collect Summarized Web Research.yml
 │
 ├── docs/
-│   ├── README-get-webpage-content.md
-│   ├── README-collect-summarized-web-research.md
-│   ├── workflow-diagram-get-webpage-content.txt
-│   ├── workflow-diagram-collect-summarized-web-research.txt
-│   ├── architecture-diagram-get-webpage-content.md
-│   ├── architecture-diagram-collect-summarized-web-research.md
+│ ├── README-get-webpage-content.md
+│ ├── README-collect-summarized-web-research.md
+│ ├── diagrams/...
 │
-└── README.md  ← (this file)
+└── README.md
 
-🔧 How to Use These Workflows Together
+## 🔧 How to Use These Workflows Together
 
-Upload each .yml workflow into Dify
+1.) Upload each .yml workflow into Dify
 
-Set each workflow to Available as Tool
+2.) Enable Available as Tool
 
-Configure your search provider (search_get)
+3.) Configure your search provider (search_get)
 
-Connect your knowledge base dataset
+4.) Connect your knowledge base dataset
 
-Run “Streaming Service Promo Code Automation” with your vendor name
+5.) Run Streaming Service Promo Code Automation
 
-🐳 Docker Hosting Configuration (Included in Repo)
+---
 
-This repo includes the full Dify hosting stack:
+## 🐳 Docker Hosting Setup
 
-nginx (reverse proxy)
+This repo includes a full Dify Docker stack:
 
-certbot (SSL + auto-renewal)
+- nginx reverse proxy  
+- Certbot (SSL auto-renew)  
+- Couchbase server  
+- SSRF proxy  
+- Postgres + Redis  
+- Unified `.env` configuration  
 
-SSRF proxy (security layer)
+---
 
-Couchbase server
+## 📦 Key Improvements in This Docker Setup
+✔ Certbot Container
 
-Postgres + Redis via docker-compose
-
-Environment management via .env.example
-
-📦 Key Improvements in This Docker Setup
-✔ Certbot container
-
-Integrated LetsEncrypt certificate management.
+Automated Let’s Encrypt certificate management.
 See: certbot/README.md
 
 ✔ Unified .env
 
-One environment file controls:
+One file controls:
 
-URLs
+Domain + URLs
 
-DB settings
+Database configuration
 
-Redis
+Redis credentials
 
-Storage providers
+Storage provider settings
 
-Vector databases
+Vector DB selection
 
-CORS
+CORS + proxy configuration
 
-Proxy behavior
-
-Sandbox settings
-
-✔ Vector Database Configurable
-
-Set via:
+## ✔ Vector Database Selectable
 
 VECTOR_STORE=weaviate
 
-
-Supports: Weaviate, Milvus, OpenSearch, Qdrant, etc.
-
-🐳 How to Deploy
-1. Prepare environment
-cp .env.example .env
+Supports Weaviate, Milvus, Qdrant, OpenSearch, etc.
 
 
-Edit values to match your domain + credentials.
+## 📄 License
 
-2. Launch services
-docker compose up -d
+MIT — See LICENSE for details.
 
-3. SSL (optional)
-
-See certbot/README.md
-
-4. Middleware (optional)
-docker compose -f docker-compose.middleware.yaml up -d
-
-📝 Notes on .env
-
-Important areas include:
+## 📝 Notes on .env
 
 Common URLs
 
@@ -181,9 +146,15 @@ SERVICE_API_URL
 
 APP_WEB_URL
 
+FILES_URL
+
 Database
 
-DB_USERNAME, DB_PASSWORD
+DB_USERNAME
+
+DB_PASSWORD
+
+DB_HOST, DB_PORT
 
 Redis
 
@@ -191,7 +162,7 @@ REDIS_PASSWORD
 
 Storage
 
-STORAGE_TYPE=local|s3|azure-blob|...
+STORAGE_TYPE=local|s3|azure-blob|google-storage|...
 
 Vector DB
 
@@ -200,3 +171,126 @@ VECTOR_STORE
 WEAVIATE_ENDPOINT
 
 MILVUS_URI
+
+---
+
+# Full Installation Guide (Dify Workflows + Docker Hosting)
+
+## 1. Install Docker & Docker Compose
+If Docker is not installed, run:
+
+sudo apt update
+sudo apt install docker.io docker-compose-plugin -y
+
+Enable Docker:
+
+sudo systemctl enable docker
+sudo systemctl start docker
+
+## 2. Clone the Repository
+
+git clone https://github.com/j-zulick/dify.ai-content-automation.git
+
+cd dify.ai-content-automation
+
+## 3. Create and Configure Your `.env` File
+Copy the example:
+
+cp .env.example .env
+
+Edit `.env` and set:
+
+### Required URLs
+- `CONSOLE_API_URL=https://yourdomain.com/console/api`
+- `CONSOLE_WEB_URL=https://yourdomain.com/console`
+- `SERVICE_API_URL=https://yourdomain.com/v1`
+- `APP_API_URL=https://yourdomain.com/api`
+- `APP_WEB_URL=https://yourdomain.com`
+- `FILES_URL=https://yourdomain.com/files`
+
+### Database
+- `DB_USERNAME=postgres`
+- `DB_PASSWORD=yourpassword`
+- `DB_HOST=db`
+- `DB_PORT=5432`
+
+### Redis
+- `REDIS_PASSWORD=yourpassword`
+
+### Vector DB
+Choose one:
+
+VECTOR_STORE=weaviate
+
+or 
+
+VECTOR_STORE=milvus
+
+## 4. Start Dify Stack
+Run all services:
+
+docker compose up -d
+
+Check logs:
+
+docker compose logs -f
+
+## 5. (Optional) Start Middleware Stack
+If needed:
+
+docker compose -f docker-compose.middleware.yaml up -d
+
+## 6. Configure SSL (Certbot)
+If using your domain with HTTPS:
+
+1. Place SSL certificates in:
+
+nginx/ssl/dify.crt
+nginx/ssl/dify.key
+
+2. Set in `.env`:
+
+NGINX_HTTPS_ENABLED=true
+
+Restart:
+
+docker compose down
+docker compose up -d
+
+## 7. Access Dify
+Open:
+
+https://yourdomain.com
+
+## 8. Use the Workflows in Dify
+
+1. Upload all `.yml` files in `workflows/`
+2. Mark each workflow as **Available as Tool**
+3. Configure search (`search_get`)
+4. Connect Knowledge Base
+5. Run **Streaming Service Promo Code Automation**
+
+## 9. Updating the Server
+To update:
+
+git pull
+docker compose down
+docker compose up --build -d
+
+## 10. Troubleshooting
+
+### Check Services
+
+docker compose ps
+
+### Restart Everything
+
+docker compose down
+docker compose up -d
+
+### Check specific container logs
+
+docker compose logs api
+docker compose logs web
+docker compose logs nginx
+
